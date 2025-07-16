@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { coursesApi, progressApi } from '../../services/api';
+import { enrollmentsApi, progressApi } from '../../services/api';
 import { Course, Progress } from '../../types';
 import { BookOpen, Clock, Trophy, Calendar, TrendingUp, Play } from 'lucide-react';
 
@@ -13,16 +13,14 @@ const StudentDashboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [coursesData, progressData] = await Promise.all([
-          coursesApi.getAllCourses(),
-          progressApi.getProgress(user?.id || '')
+        const token = localStorage.getItem('token');
+        if (!user?._id) return;
+        const [enrollments, progressData] = await Promise.all([
+          enrollmentsApi.getUserEnrollments(user._id, token || undefined),
+          progressApi.getProgress(user._id)
         ]);
-        
-        // Filter enrolled courses
-        const enrolledCourses = coursesData.filter(course => 
-          course.enrolledStudents.includes(user?.id || '')
-        );
-        
+        // Each enrollment has a 'course' field populated
+        const enrolledCourses = enrollments.map((enrollment: any) => enrollment.course);
         setCourses(enrolledCourses);
         setProgress(progressData);
       } catch (error) {
@@ -31,9 +29,8 @@ const StudentDashboard: React.FC = () => {
         setLoading(false);
       }
     };
-
     fetchData();
-  }, [user?.id]);
+  }, [user?._id]);
 
   if (loading) {
     return (
@@ -44,50 +41,51 @@ const StudentDashboard: React.FC = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Student Dashboard</h2>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.firstName}!</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Welcome back, {user?.firstName}!</h1>
         <p className="text-gray-600 mt-2">Continue your German learning journey</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <BookOpen className="h-8 w-8 text-blue-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Enrolled Courses</p>
-              <p className="text-2xl font-bold text-gray-900">{courses.length}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Enrolled Courses</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{courses.length}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Clock className="h-8 w-8 text-green-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Study Time</p>
-              <p className="text-2xl font-bold text-gray-900">24h</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Study Time</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">24h</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Trophy className="h-8 w-8 text-yellow-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Achievements</p>
-              <p className="text-2xl font-bold text-gray-900">8</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Achievements</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">8</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <TrendingUp className="h-8 w-8 text-purple-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Progress</p>
-              <p className="text-2xl font-bold text-gray-900">68%</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Progress</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">87%</p>
             </div>
           </div>
         </div>
@@ -98,8 +96,8 @@ const StudentDashboard: React.FC = () => {
         <div className="p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Continue Learning</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {courses.map((course) => (
-              <div key={course.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            {courses.map((course: Course) => (
+              <div key={course._id || course.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-start space-x-4">
                   <img
                     src={course.thumbnail}

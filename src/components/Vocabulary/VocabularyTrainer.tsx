@@ -79,7 +79,8 @@ const VocabularyTrainer: React.FC = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Vocabulary Trainer</h2>
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Vocabulary Trainer</h1>
         <div className="flex space-x-4">
@@ -108,7 +109,7 @@ const VocabularyTrainer: React.FC = () => {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Brain className="h-6 w-6 text-blue-600 mr-2" />
             <div>
@@ -118,7 +119,7 @@ const VocabularyTrainer: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <CheckCircle className="h-6 w-6 text-green-600 mr-2" />
             <div>
@@ -128,7 +129,7 @@ const VocabularyTrainer: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <RotateCcw className="h-6 w-6 text-orange-600 mr-2" />
             <div>
@@ -138,7 +139,7 @@ const VocabularyTrainer: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Brain className="h-6 w-6 text-purple-600 mr-2" />
             <div>
@@ -151,7 +152,7 @@ const VocabularyTrainer: React.FC = () => {
 
       {/* Practice Card */}
       {currentWord && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 p-8">
           <div className="text-center">
             <div className="mb-6">
               <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
@@ -207,7 +208,7 @@ const VocabularyTrainer: React.FC = () => {
       )}
 
       {/* Word List */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-900">Your Vocabulary</h2>

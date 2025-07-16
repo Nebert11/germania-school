@@ -63,105 +63,43 @@ const ForumList: React.FC = () => {
   });
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Discussion Forum</h1>
-        <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-          <Plus className="h-4 w-4 mr-2" />
-          New Post
-        </button>
-      </div>
-
-      {/* Search and Filter */}
-      <div className="flex space-x-4">
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search discussions..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
+    <div className="p-8 max-w-4xl mx-auto bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Forum</h2>
+      <div className="mb-4 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-2 md:space-y-0">
+        <input
+          type="text"
+          placeholder="Search forum..."
+          className="border rounded px-3 py-2 w-full md:w-64 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+        />
         <select
+          className="border rounded px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          onChange={e => setSelectedCategory(e.target.value)}
         >
           {categories.map(category => (
-            <option key={category} value={category}>
-              {category === 'all' ? 'All Categories' : category}
-            </option>
+            <option key={category} value={category}>{category}</option>
           ))}
         </select>
       </div>
-
-      {/* Posts List */}
-      <div className="space-y-4">
-        {filteredPosts.map((post) => (
-          <div key={post.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-start space-x-4">
-              {/* Vote Section */}
-              <div className="flex flex-col items-center space-y-1">
-                <button className="p-1 text-gray-400 hover:text-blue-600 transition-colors">
-                  <ArrowUp className="h-5 w-5" />
-                </button>
-                <span className="text-sm font-medium text-gray-900">{post.votes}</span>
-                <button className="p-1 text-gray-400 hover:text-red-600 transition-colors">
-                  <ArrowDown className="h-5 w-5" />
-                </button>
+      <div className="space-y-6">
+        {filteredPosts.map(post => (
+          <div key={post.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
+            <div className="flex items-center mb-2">
+              <img src={post.avatar} alt={post.author} className="h-10 w-10 rounded-full object-cover mr-3" />
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{post.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">By {post.author} &bull; {post.createdAt}</p>
               </div>
-
-              {/* Post Content */}
-              <div className="flex-1">
-                <div className="flex items-center space-x-2 mb-2">
-                  <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                    {post.category}
-                  </span>
-                  <span className="text-gray-500 text-sm">•</span>
-                  <span className="text-gray-500 text-sm">{post.createdAt}</span>
-                </div>
-                
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 cursor-pointer">
-                  {post.title}
-                </h3>
-                
-                <p className="text-gray-700 mb-3 line-clamp-2">{post.content}</p>
-                
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
-                  <div className="flex items-center space-x-2">
-                    <img
-                      src={post.avatar}
-                      alt={post.author}
-                      className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <span>{post.author}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>{post.replies} replies</span>
-                  </div>
-                </div>
-              </div>
+            </div>
+            <p className="text-gray-700 dark:text-gray-200 mb-2">{post.content}</p>
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+              <span className="mr-4">Replies: {post.replies}</span>
+              <span>Votes: {post.votes}</span>
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center">
-        <nav className="flex space-x-2">
-          <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            Previous
-          </button>
-          <button className="px-3 py-2 bg-blue-600 text-white rounded-lg">1</button>
-          <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">2</button>
-          <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">3</button>
-          <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            Next
-          </button>
-        </nav>
       </div>
     </div>
   );

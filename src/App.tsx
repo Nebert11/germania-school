@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import LoginForm from './components/Auth/LoginForm';
@@ -13,11 +14,24 @@ import LiveClassRoom from './components/LiveClass/LiveClassRoom';
 import ForumList from './components/Forum/ForumList';
 import ProgressTracker from './components/Progress/ProgressTracker';
 import QuizComponent from './components/Quiz/QuizComponent';
+import UsersPage from './components/Users/UsersPage';
+import AnalyticsPage from './components/Analytics/AnalyticsPage';
+import SettingsPage from './components/Settings/SettingsPage';
+import ProfilePage from './components/Profile/ProfilePage';
+import MyCourses from './components/Courses/MyCourses';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
-  const [currentView, setCurrentView] = useState('dashboard');
+  const [currentHash, setCurrentHash] = useState(() => window.location.hash.substring(1));
   const [showAuthForm, setShowAuthForm] = useState<'login' | 'register'>('login');
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setCurrentHash(window.location.hash.substring(1));
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   if (loading) {
     return (
@@ -42,12 +56,13 @@ const AppContent: React.FC = () => {
   }
 
   const renderContent = () => {
-    // Parse hash navigation
-    const hash = window.location.hash.substring(1);
+    const hash = currentHash;
     
     switch (hash) {
       case 'courses':
         return <CourseList />;
+      case 'my-courses':
+        return <MyCourses />;
       case 'vocabulary':
         return <VocabularyTrainer />;
       case 'live':
@@ -87,6 +102,14 @@ const AppContent: React.FC = () => {
             onComplete={(score) => console.log('Quiz completed with score:', score)}
           />
         );
+      case 'users':
+        return <UsersPage />;
+      case 'analytics':
+        return <AnalyticsPage />;
+      case 'settings':
+        return <SettingsPage />;
+      case 'profile':
+        return <ProfilePage />;
       default:
         // Default dashboard based on user role
         switch (user.role) {
@@ -101,11 +124,11 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto bg-white dark:bg-gray-800 dark:text-gray-100 transition-colors">
           {renderContent()}
         </main>
       </div>
@@ -115,9 +138,11 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 

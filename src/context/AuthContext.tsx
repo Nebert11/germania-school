@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '../types';
+import { authApi } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
@@ -35,23 +36,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock user data based on email
-      const mockUser: User = {
-        id: '1',
-        email,
-        firstName: email.includes('admin') ? 'Admin' : email.includes('teacher') ? 'Teacher' : 'Student',
-        lastName: 'User',
-        role: email.includes('admin') ? 'admin' : email.includes('teacher') ? 'teacher' : 'student',
-        avatar: `https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1`,
-        createdAt: new Date().toISOString(),
-        isActive: true
-      };
-      
-      setUser(mockUser);
-      localStorage.setItem('user', JSON.stringify(mockUser));
+      const res = await authApi.login(email, password);
+      const { token, user } = res;
+      setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
     } catch (error) {
       throw new Error('Login failed');
     } finally {
@@ -62,27 +51,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const register = async (userData: Partial<User>, password: string) => {
     setLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const newUser: User = {
-        id: Date.now().toString(),
-        email: userData.email!,
-        firstName: userData.firstName!,
-        lastName: userData.lastName!,
-        role: userData.role || 'student',
-        avatar: `https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1`,
-        createdAt: new Date().toISOString(),
-        isActive: true
-      };
-      
-      setUser(newUser);
-      localStorage.setItem('user', JSON.stringify(newUser));
+      const res = await authApi.register({ ...userData, password });
+      const { token, user } = res;
+      setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', token);
     } catch (error) {
       throw new Error('Registration failed');
     } finally {

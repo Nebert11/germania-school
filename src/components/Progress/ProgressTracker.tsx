@@ -52,7 +52,8 @@ const ProgressTracker: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Progress Tracker</h2>
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-900">Progress Tracker</h1>
         <div className="flex space-x-2">
@@ -74,7 +75,7 @@ const ProgressTracker: React.FC = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Clock className="h-8 w-8 text-blue-600" />
             <div className="ml-4">
@@ -85,7 +86,7 @@ const ProgressTracker: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <BookOpen className="h-8 w-8 text-green-600" />
             <div className="ml-4">
@@ -96,7 +97,7 @@ const ProgressTracker: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Trophy className="h-8 w-8 text-yellow-600" />
             <div className="ml-4">
@@ -107,7 +108,7 @@ const ProgressTracker: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Calendar className="h-8 w-8 text-purple-600" />
             <div className="ml-4">
@@ -120,7 +121,7 @@ const ProgressTracker: React.FC = () => {
       </div>
 
       {/* Weekly Goal */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 className="text-xl font-bold text-gray-900 mb-4">Weekly Goal</h2>
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-gray-600">Study Hours</span>
@@ -140,7 +141,7 @@ const ProgressTracker: React.FC = () => {
       </div>
 
       {/* Course Progress */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200">
         <div className="p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Course Progress</h2>
           <div className="space-y-4">
@@ -178,7 +179,7 @@ const ProgressTracker: React.FC = () => {
       </div>
 
       {/* Study Calendar */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200">
         <div className="p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">Study Calendar</h2>
           <div className="grid grid-cols-7 gap-2 text-center text-sm">

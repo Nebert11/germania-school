@@ -1,5 +1,6 @@
 export interface User {
   id: string;
+  _id?: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -11,6 +12,7 @@ export interface User {
 
 export interface Course {
   id: string;
+  _id?: string;
   title: string;
   description: string;
   thumbnail: string;

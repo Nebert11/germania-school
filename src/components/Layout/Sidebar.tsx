@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
 
   const studentNavItems = [
     { icon: Home, label: 'Dashboard', href: '#dashboard' },
-    { icon: BookOpen, label: 'My Courses', href: '#courses' },
+    { icon: BookOpen, label: 'My Courses', href: '#my-courses' },
     { icon: Calendar, label: 'Schedule', href: '#schedule' },
     { icon: Brain, label: 'Vocabulary', href: '#vocabulary' },
     { icon: Video, label: 'Live Classes', href: '#live' },
@@ -29,7 +29,7 @@ const Sidebar: React.FC = () => {
 
   const teacherNavItems = [
     { icon: Home, label: 'Dashboard', href: '#dashboard' },
-    { icon: BookOpen, label: 'My Courses', href: '#courses' },
+    { icon: BookOpen, label: 'My Courses', href: '#my-courses' },
     { icon: Users, label: 'Students', href: '#students' },
     { icon: Calendar, label: 'Schedule', href: '#schedule' },
     { icon: Video, label: 'Live Classes', href: '#live' },
@@ -57,16 +57,16 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
+    <aside className="w-64 bg-white dark:bg-gray-900 shadow-sm border-r border-gray-200 dark:border-gray-700 min-h-screen transition-colors">
       <div className="p-4">
         <div className="space-y-2">
           {getNavItems().map((item) => (
             <a
               key={item.label}
               href={item.href}
-              className="flex items-center space-x-3 px-3 py-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors group"
+              className="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
             >
-              <item.icon className="h-5 w-5 group-hover:text-blue-600" />
+              <item.icon className="h-5 w-5 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
               <span className="text-sm font-medium">{item.label}</span>
             </a>
           ))}

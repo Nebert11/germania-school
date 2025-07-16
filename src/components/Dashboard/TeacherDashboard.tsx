@@ -36,26 +36,21 @@ const TeacherDashboard: React.FC = () => {
   const totalStudents = courses.reduce((sum, course) => sum + course.enrolledStudents.length, 0);
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Teacher Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage your courses and students</p>
-        </div>
-        <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors">
-          <Plus className="h-4 w-4 mr-2" />
-          Create Course
-        </button>
+    <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Teacher Dashboard</h2>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Welcome, {user?.firstName}!</h1>
+        <p className="text-gray-600 mt-2">Manage your courses and students</p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <BookOpen className="h-8 w-8 text-blue-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">My Courses</p>
-              <p className="text-2xl font-bold text-gray-900">{courses.length}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">My Courses</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{courses.length}</p>
             </div>
           </div>
         </div>

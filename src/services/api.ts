@@ -110,53 +110,67 @@ const mockVocabulary: VocabularyWord[] = [
   }
 ];
 
-// API functions
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 export const authApi = {
   login: async (email: string, password: string) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return { token: 'mock-jwt-token', user: mockCourses[0].teacher };
+    const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    if (!res.ok) throw new Error('Login failed');
+    return await res.json();
   },
 
   register: async (userData: any) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return { token: 'mock-jwt-token', user: userData };
+    const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+    if (!res.ok) throw new Error('Registration failed');
+    return await res.json();
   }
 };
 
 export const coursesApi = {
-  getAllCourses: async (): Promise<Course[]> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return mockCourses;
+  getAllCourses: async () => {
+    const res = await fetch(`${API_BASE_URL}/api/courses`);
+    if (!res.ok) throw new Error('Failed to fetch courses');
+    return await res.json();
   },
 
-  getCourse: async (id: string): Promise<Course> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const course = mockCourses.find(c => c.id === id);
-    if (!course) throw new Error('Course not found');
-    return course;
+  getCourse: async (id: string) => {
+    const res = await fetch(`${API_BASE_URL}/api/courses/${id}`);
+    if (!res.ok) throw new Error('Course not found');
+    return await res.json();
   },
 
-  createCourse: async (courseData: Partial<Course>): Promise<Course> => {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    const newCourse: Course = {
-      id: Date.now().toString(),
-      ...courseData,
-      lessons: [],
-      enrolledStudents: [],
-      createdAt: new Date().toISOString(),
-      isActive: true
-    } as Course;
-    mockCourses.push(newCourse);
-    return newCourse;
+  createCourse: async (courseData: any, token?: string) => {
+    const res = await fetch(`${API_BASE_URL}/api/courses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(courseData)
+    });
+    if (!res.ok) throw new Error('Failed to create course');
+    return await res.json();
   },
 
-  enrollInCourse: async (courseId: string, userId: string): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const course = mockCourses.find(c => c.id === courseId);
-    if (course && !course.enrolledStudents.includes(userId)) {
-      course.enrolledStudents.push(userId);
-    }
+  enrollInCourse: async (courseId: string, userId: string, token?: string) => {
+    const res = await fetch(`${API_BASE_URL}/api/enrollments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ course: courseId, user: userId })
+    });
+    if (!res.ok) throw new Error('Failed to enroll in course');
+    return await res.json();
   }
 };
 
@@ -222,5 +236,17 @@ export const progressApi = {
   updateProgress: async (progressData: Partial<Progress>): Promise<void> => {
     await new Promise(resolve => setTimeout(resolve, 200));
     // Mock implementation
+  }
+};
+
+export const enrollmentsApi = {
+  getUserEnrollments: async (userId: string, token?: string) => {
+    const res = await fetch(`${API_BASE_URL}/api/enrollments/user/${userId}`, {
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      }
+    });
+    if (!res.ok) throw new Error('Failed to fetch enrollments');
+    return await res.json();
   }
 };

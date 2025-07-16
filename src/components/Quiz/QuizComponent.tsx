@@ -149,7 +149,8 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ title, questions, onCompl
   const selectedAnswer = selectedAnswers[question.id];
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="p-8 max-w-2xl mx-auto bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Quiz</h2>
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-900">{title}</h2>
