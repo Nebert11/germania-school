@@ -27,11 +27,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/germania-school';
+const MONGOURI = process.env.MONGOURI || 'mongodb://localhost:27017';
 
-mongoose.connect(MONGO_URI)
+// Connect to MongoDB
+mongoose.connect(MONGOURI)
   .then(async () => {
-    console.log('MongoDB connected');
+    console.log('Connected to MongoDB');
     // Insert sample courses if none exist
     const courseCount = await Course.countDocuments();
     if (courseCount === 0) {
@@ -66,13 +67,15 @@ mongoose.connect(MONGO_URI)
       ]);
       console.log('Sample courses inserted');
     }
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
   })
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
 
 app.get('/', (req, res) => {
   res.send('Germania School API is running!');
 });
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-}); 

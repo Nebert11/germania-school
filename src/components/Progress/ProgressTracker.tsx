@@ -21,7 +21,7 @@ const ProgressTracker: React.FC = () => {
         
         setProgress(progressData);
         const enrolledCourses = coursesData.filter(course => 
-          course.enrolledStudents.includes(user?.id || '')
+          Array.isArray(course.enrolledStudents) && course.enrolledStudents.includes(user?.id || '')
         );
         setCourses(enrolledCourses);
       } catch (error) {

@@ -24,7 +24,7 @@ const MyCourses: React.FC = () => {
         setLoading(false);
       }
     };
-    fetchEnrollments();
+    fetchEnrollments(); 
   }, [user?._id]);
 
   if (loading) {
@@ -51,7 +51,7 @@ const MyCourses: React.FC = () => {
               ? course.enrolledStudents.length
               : 0;
             return (
-              <div key={course.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
+              <div key={course._id || course.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
                 <img
                   src={thumbnail}
                   alt={course.title}
@@ -106,4 +106,4 @@ const MyCourses: React.FC = () => {
   );
 };
 
-export default MyCourses; 
+export default MyCourses;
