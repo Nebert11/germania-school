@@ -18,13 +18,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 
-if (process.env.NODE_ENV === 'production') {
-  const distPath = path.join(__dirname, '../dist');
-  app.use(express.static(distPath));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
-  });
-}
+// if (process.env.NODE_ENV === 'production') {
+//   const distPath = path.join(__dirname, '../dist');
+//   app.use(express.static(distPath));
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.join(distPath, 'index.html'));
+//   });
+// }
 
 const PORT = process.env.PORT || 5000;
 const MONGOURI = process.env.MONGOURI || 'mongodb://localhost:27017';
