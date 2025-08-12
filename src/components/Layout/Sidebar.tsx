@@ -24,13 +24,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const studentNavItems = [
     { icon: Home, label: 'Dashboard', href: '#dashboard' },
     { icon: BookOpen, label: 'My Courses', href: '#my-courses' },
+    // Mobile-only full courses list
+    { icon: BookOpen, label: 'Courses', href: '#courses', onlyMobile: true },
     { icon: Calendar, label: 'Schedule', href: '#schedule' },
     { icon: Brain, label: 'Vocabulary', href: '#vocabulary' },
     { icon: Video, label: 'Live Classes', href: '#live' },
     { icon: MessageSquare, label: 'Forum', href: '#forum' },
     { icon: BarChart3, label: 'Progress', href: '#progress' },
     { icon: Award, label: 'Achievements', href: '#achievements' },
-  ];
+  ] as Array<{ icon: any; label: string; href: string; onlyMobile?: boolean }>;
 
   const teacherNavItems = [
     { icon: Home, label: 'Dashboard', href: '#dashboard' },
@@ -79,7 +81,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 key={item.label}
                 href={item.href}
                 onClick={onClose}
-                className="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+                className={`flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group ${
+                  (item as any).onlyMobile ? 'md:hidden' : ''
+                }`}
               >
                 <item.icon className="h-5 w-5 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
                 <span className="text-sm font-medium">{item.label}</span>

@@ -36,7 +36,22 @@ const ProfilePage: React.FC = () => {
           <form onSubmit={handleSave} className="space-y-6">
             <div className="flex items-center space-x-6">
               <div>
-                <img src={avatar} alt="avatar" className="h-24 w-24 rounded-full object-cover border" />
+                {(() => {
+                  const fullName = `${firstName || user.firstName} ${lastName || user.lastName}`.trim();
+                  const computedAvatar = avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=E5E7EB&color=111827&size=128`;
+                  const fallbackAvatar = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23e5e7eb"/><circle cx="64" cy="48" r="24" fill="%239ca3af"/><rect x="32" y="80" width="64" height="32" rx="16" fill="%239ca3af"/></svg>';
+                  return (
+                    <img
+                      src={computedAvatar}
+                      alt="avatar"
+                      className="h-24 w-24 rounded-full object-cover border"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).onerror = null;
+                        (e.currentTarget as HTMLImageElement).src = fallbackAvatar;
+                      }}
+                    />
+                  );
+                })()}
                 <input type="file" accept="image/*" onChange={handleAvatarChange} className="mt-2" />
               </div>
               <div>
