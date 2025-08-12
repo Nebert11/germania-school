@@ -110,7 +110,7 @@ const CourseList: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCourses.map((course) => {
+          {filteredCourses.map((course: any) => {
           // Fallbacks for backend data
           const isEnrolled = Array.isArray(course.enrolledStudents)
             ? course.enrolledStudents.includes(user?._id || '')
@@ -119,9 +119,12 @@ const CourseList: React.FC = () => {
           const level = course.level || 'beginner';
           const type = course.type || 'live';
           const price = course.price !== undefined ? course.price : 0;
-          const enrolledCount = Array.isArray(course.enrolledStudents)
+           const enrolledCount = Array.isArray(course.enrolledStudents)
             ? course.enrolledStudents.length
             : 0;
+           const teacherName = course.teacher?.firstName
+             ? `${course.teacher.firstName} ${course.teacher.lastName}`
+             : 'Unassigned';
           
           return (
             <div key={course._id || course.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
@@ -151,7 +154,7 @@ const CourseList: React.FC = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">{course.title}</h3>
                 <p className="text-gray-600 text-sm mb-4">{course.description}</p>
                 
-                <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                 <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
                   <div className="flex items-center">
                     <Clock className="h-4 w-4 mr-1" />
                     {course.duration || 'N/A'}
@@ -160,6 +163,10 @@ const CourseList: React.FC = () => {
                     <Users className="h-4 w-4 mr-1" />
                     {enrolledCount} enrolled
                   </div>
+                   <div className="flex items-center">
+                     <BookOpen className="h-4 w-4 mr-1 text-blue-600" />
+                     {teacherName}
+                   </div>
                   <div className="flex items-center">
                     <Star className="h-4 w-4 mr-1 text-yellow-500" />
                     4.8

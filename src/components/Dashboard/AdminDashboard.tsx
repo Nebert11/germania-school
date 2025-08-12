@@ -1,17 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { coursesApi } from '../../services/api';
-import { Course } from '../../types';
+import React, { useState, useEffect, useMemo } from 'react';
+import { coursesApi, usersApi } from '../../services/api';
+import { Course, User } from '../../types';
 import { Users, BookOpen, TrendingUp, DollarSign, UserPlus, Settings, BarChart3 } from 'lucide-react';
+import { analyticsApi } from '../../services/api';
 
 const AdminDashboard: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedCourseId, setSelectedCourseId] = useState<string>('');
+  const [selectedTeacherId, setSelectedTeacherId] = useState<string>('');
+  const [assigning, setAssigning] = useState(false);
+  const [completionRate, setCompletionRate] = useState<number>(0);
 
   useEffect(() => { 
     const fetchData = async () => {
       try {
-        const coursesData = await coursesApi.getAllCourses();
+        const token = localStorage.getItem('token') || undefined;
+        const [coursesData, usersData, comp] = await Promise.all([
+          coursesApi.getAllCourses(),
+          usersApi.getAllUsers(),
+          analyticsApi.getCompletionRate(token)
+        ]);
         setCourses(coursesData);
+        setUsers(usersData);
+        setCompletionRate(comp);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -22,6 +35,26 @@ const AdminDashboard: React.FC = () => {
     fetchData();
   }, []);
 
+  const teachers = useMemo(() => users.filter(u => u.role === 'teacher'), [users]);
+
+  const handleAssignTeacher = async () => {
+    if (!selectedCourseId || !selectedTeacherId) return;
+    try {
+      setAssigning(true);
+      const token = localStorage.getItem('token') || undefined;
+      await coursesApi.assignTeacher(selectedCourseId, selectedTeacherId, token);
+      const refreshed = await coursesApi.getAllCourses();
+      setCourses(refreshed);
+      setSelectedCourseId('');
+      setSelectedTeacherId('');
+    } catch (err) {
+      console.error('Error assigning teacher:', err);
+      alert('Failed to assign teacher');
+    } finally {
+      setAssigning(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -30,14 +63,9 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
-  const totalStudents = courses.reduce(
-    (sum, course) => sum + (course.enrolledStudents?.length || 0),
-    0
-  );
-  const totalRevenue = courses.reduce(
-    (sum, course) => sum + ((course.price || 0) * (course.enrolledStudents?.length || 0)),
-    0
-  );
+  const totalStudents = courses.reduce((sum, c: any) => sum + ((c.enrolledStudents?.length) || 0), 0);
+  const totalUsers = users.length;
+  const totalRevenue = courses.reduce((sum, c: any) => sum + (((c.price || 0) * ((c.enrolledStudents?.length) || 0))), 0);
 
   return (
     <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
@@ -46,6 +74,7 @@ const AdminDashboard: React.FC = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Admin Dashboard</h1>
           <p className="text-gray-600 mt-2">Manage your platform and monitor performance</p>
+          <p className="text-sm text-gray-500 mt-1">Users: {totalUsers} • Courses: {courses.length} • Students: {totalStudents}</p>
         </div>
         <div className="flex space-x-3">
           <button className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -59,20 +88,56 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Assign Teacher to Course */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors mb-8">
+        <h3 className="text-lg font-semibold mb-4">Assign Teacher to Course</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <select
+            value={selectedCourseId}
+            onChange={(e) => setSelectedCourseId(e.target.value)}
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900"
+          >
+            <option value="">Select course</option>
+            {courses.map((c: any) => (
+              <option key={c._id || c.id} value={c._id || c.id}>{c.title}</option>
+            ))}
+          </select>
+          <select
+            value={selectedTeacherId}
+            onChange={(e) => setSelectedTeacherId(e.target.value)}
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900"
+          >
+            <option value="">Select teacher</option>
+            {teachers.map((t: any) => (
+              <option key={t._id || t.id} value={t._id || t.id}>
+                {t.firstName} {t.lastName}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleAssignTeacher}
+            disabled={!selectedCourseId || !selectedTeacherId || assigning}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          >
+            {assigning ? 'Assigning...' : 'Assign'}
+          </button>
+        </div>
+      </div>
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <Users className="h-8 w-8 text-blue-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Students</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalStudents}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Users</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalUsers}</p>
               <p className="text-sm text-green-600 mt-1">↗ 12% from last month</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <BookOpen className="h-8 w-8 text-green-600" />
             <div className="ml-4">
@@ -83,7 +148,7 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-600" />
             <div className="ml-4">
@@ -94,12 +159,12 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 transition-colors">
           <div className="flex items-center">
             <TrendingUp className="h-8 w-8 text-purple-600" />
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Completion Rate</p>
-              <p className="text-2xl font-bold text-gray-900">84%</p>
+              <p className="text-2xl font-bold text-gray-900">{Math.round(completionRate)}%</p>
               <p className="text-sm text-green-600 mt-1">↗ 5% from last month</p>
             </div>
           </div>
@@ -112,31 +177,20 @@ const AdminDashboard: React.FC = () => {
           <div className="p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Users</h2>
             <div className="space-y-4">
-              <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                <img
-                  src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1"
-                  alt="User"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-900">Anna Mueller</p>
-                  <p className="text-sm text-gray-600">Student • Joined 2 hours ago</p>
+              {users.slice(-5).reverse().map((u) => (
+                <div key={u._id || u.id} className="flex items-center space-x-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                  <img
+                    src={u.avatar || 'https://via.placeholder.com/64'}
+                    alt="User"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-900 dark:text-gray-100">{u.firstName} {u.lastName}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{u.role}</p>
+                  </div>
+                  <span className={`px-2 py-1 rounded-full text-xs ${u.role === 'teacher' ? 'bg-blue-100 text-blue-800' : u.role === 'student' ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-800'}`}>{u.role}</span>
                 </div>
-                <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">New</span>
-              </div>
-              
-              <div className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                <img
-                  src="https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1"
-                  alt="User"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-900">Michael Weber</p>
-                  <p className="text-sm text-gray-600">Teacher • Joined 1 day ago</p>
-                </div>
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Teacher</span>
-              </div>
+              ))}
             </div>
           </div>
         </div>

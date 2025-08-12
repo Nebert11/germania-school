@@ -19,6 +19,7 @@ import AnalyticsPage from './components/Analytics/AnalyticsPage';
 import SettingsPage from './components/Settings/SettingsPage';
 import ProfilePage from './components/Profile/ProfilePage';
 import MyCourses from './components/Courses/MyCourses';
+import TeacherStudents from './components/Dashboard/TeacherStudents';
 
 const AppContent: React.FC = () => {
   const { user, loading } = useAuth();
@@ -61,7 +62,8 @@ const AppContent: React.FC = () => {
     
     switch (hash) {
       case 'courses':
-        return <CourseList />;
+        // Teachers see their assigned courses here as well
+        return user.role === 'teacher' ? <MyCourses /> : <CourseList />;
       case 'my-courses':
         return <MyCourses />;
       case 'vocabulary':
@@ -111,6 +113,8 @@ const AppContent: React.FC = () => {
         return <SettingsPage />;
       case 'profile':
         return <ProfilePage />;
+      case 'students':
+        return <TeacherStudents />;
       default:
         // Default dashboard based on user role
         switch (user.role) {

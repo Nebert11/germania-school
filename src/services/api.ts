@@ -160,6 +160,19 @@ export const coursesApi = {
     return await res.json();
   },
 
+  assignTeacher: async (courseId: string, teacherId: string, token?: string) => {
+    const res = await fetch(`${API_BASE_URL}/api/courses/${courseId}/assign-teacher`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({ teacher: teacherId })
+    });
+    if (!res.ok) throw new Error('Failed to assign teacher');
+    return await res.json();
+  },
+
   enrollInCourse: async (courseId: string, userId: string, token?: string) => {
     const res = await fetch(`${API_BASE_URL}/api/enrollments`, {
       method: 'POST',
@@ -170,6 +183,19 @@ export const coursesApi = {
       body: JSON.stringify({ course: courseId, user: userId })
     });
     if (!res.ok) throw new Error('Failed to enroll in course');
+    return await res.json();
+  }
+};
+
+export const usersApi = {
+  getAllUsers: async (token?: string): Promise<User[]> => {
+    const res = await fetch(`${API_BASE_URL}/api/users`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      }
+    });
+    if (!res.ok) throw new Error('Failed to fetch users');
     return await res.json();
   }
 };
@@ -248,5 +274,18 @@ export const enrollmentsApi = {
     });
     if (!res.ok) throw new Error('Failed to fetch enrollments');
     return await res.json();
+  }
+};
+
+export const analyticsApi = {
+  getCompletionRate: async (token?: string): Promise<number> => {
+    const res = await fetch(`${API_BASE_URL}/api/analytics/completion-rate`, {
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      }
+    });
+    if (!res.ok) throw new Error('Failed to fetch completion rate');
+    const data = await res.json();
+    return typeof data === 'number' ? data : data?.completionRate ?? 0;
   }
 };

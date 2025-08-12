@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { enrollmentsApi } from '../../services/api';
+import { coursesApi, enrollmentsApi } from '../../services/api';
 import { Course } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { BookOpen, Clock, Users, Star } from 'lucide-react';
@@ -10,22 +10,35 @@ const MyCourses: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchEnrollments = async () => {
+    const fetchCourses = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!user?._id) return;
-        const enrollments = await enrollmentsApi.getUserEnrollments(user._id, token || undefined);
-        // Each enrollment has a 'course' field populated
-        const enrolledCourses = enrollments.map((enrollment: any) => enrollment.course);
-        setCourses(enrolledCourses);
+        if (!user) return;
+
+        if (user.role === 'teacher') {
+          // Show courses the teacher is responsible for
+          const all = await coursesApi.getAllCourses();
+          const teacherId = (user as any)._id || user.id;
+          const mine = all.filter((c: any) => {
+            const tId = c.teacherId || c.teacher?._id || c.teacher?.id;
+            return tId === teacherId;
+          });
+          setCourses(mine);
+        } else {
+          // For students, use enrollments
+          if (!(user as any)._id) return;
+          const enrollments = await enrollmentsApi.getUserEnrollments((user as any)._id, token || undefined);
+          const enrolledCourses = enrollments.map((enrollment: any) => enrollment.course);
+          setCourses(enrolledCourses);
+        }
       } catch (error) {
-        console.error('Error fetching enrollments:', error);
+        console.error('Error fetching my courses:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchEnrollments(); 
-  }, [user?._id]);
+    fetchCourses();
+  }, [user]);
 
   if (loading) {
     return (
@@ -39,7 +52,9 @@ const MyCourses: React.FC = () => {
     <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
       <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">My Courses</h2>
       {courses.length === 0 ? (
-        <div className="text-center text-gray-500 dark:text-gray-400">You are not enrolled in any courses yet.</div>
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          {user?.role === 'teacher' ? 'No courses assigned to you yet.' : 'You are not enrolled in any courses yet.'}
+        </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course: Course) => {
