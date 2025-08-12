@@ -7,7 +7,7 @@ const AdminDashboard: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchData = async () => {
       try {
         const coursesData = await coursesApi.getAllCourses();
@@ -30,8 +30,14 @@ const AdminDashboard: React.FC = () => {
     );
   }
 
-  const totalStudents = courses.reduce((sum, course) => sum + course.enrolledStudents.length, 0);
-  const totalRevenue = courses.reduce((sum, course) => sum + (course.price * course.enrolledStudents.length), 0);
+  const totalStudents = courses.reduce(
+    (sum, course) => sum + (course.enrolledStudents?.length || 0),
+    0
+  );
+  const totalRevenue = courses.reduce(
+    (sum, course) => sum + ((course.price || 0) * (course.enrolledStudents?.length || 0)),
+    0
+  );
 
   return (
     <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
@@ -148,7 +154,7 @@ const AdminDashboard: React.FC = () => {
                   />
                   <div className="flex-1">
                     <p className="font-semibold text-gray-900">{course.title}</p>
-                    <p className="text-sm text-gray-600">{course.enrolledStudents.length} students</p>
+                    <p className="text-sm text-gray-600">{course.enrolledStudents?.length || 0} students</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-green-600">92%</p>

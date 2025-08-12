@@ -10,7 +10,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onToggleForm }) => {
   const { register, loading } = useAuth();
   const [formData, setFormData] = useState({
     firstName: '',
-    lastName: '',
+    lastName: '', 
     email: '',
     password: '',
     confirmPassword: '',

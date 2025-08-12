@@ -19,7 +19,7 @@ const TeacherDashboard: React.FC = () => {
         console.error('Error fetching courses:', error);
       } finally {
         setLoading(false);
-      }
+      } 
     };
 
     fetchCourses();
@@ -33,7 +33,10 @@ const TeacherDashboard: React.FC = () => {
     );
   }
 
-  const totalStudents = courses.reduce((sum, course) => sum + course.enrolledStudents.length, 0);
+  const totalStudents = courses.reduce(
+    (sum, course) => sum + (course.enrolledStudents?.length || 0),
+    0
+  );
 
   return (
     <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
@@ -103,7 +106,7 @@ const TeacherDashboard: React.FC = () => {
                 <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
                   <span className="flex items-center">
                     <Users className="h-4 w-4 mr-1" />
-                    {course.enrolledStudents.length} students
+                    {course.enrolledStudents?.length || 0} students
                   </span>
                   <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
                     {course.level}
