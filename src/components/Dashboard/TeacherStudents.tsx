@@ -17,9 +17,10 @@ const TeacherStudents: React.FC = () => {
   useEffect(() => {
     const load = async () => {
       try {
+        const token = localStorage.getItem('token') || undefined;
         const [allCourses, allUsers] = await Promise.all([
           coursesApi.getAllCourses(),
-          usersApi.getAllUsers()
+          usersApi.getAllUsers(token)
         ]);
 
         const teacherId = user?._id || user?.id;

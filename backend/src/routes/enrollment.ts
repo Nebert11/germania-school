@@ -11,6 +11,7 @@ router.post('/', async (req, res) => {
     const { user, course } = req.body;
     const enrollment = new Enrollment({ user, course });
     await enrollment.save();
+    // increment enrolled count on course? Frontend computes via Enrollment count
     res.status(201).json(enrollment);
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });

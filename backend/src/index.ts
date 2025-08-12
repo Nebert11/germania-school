@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import courseRoutes from './routes/course';
 import enrollmentRoutes from './routes/enrollment';
+import usersRoutes from './routes/users';
+import analyticsRoutes from './routes/analytics';
 import Course from './models/Course';
 import User from './models/User';
 import path from 'path';
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // if (process.env.NODE_ENV === 'production') {
 //   const distPath = path.join(__dirname, '../dist');

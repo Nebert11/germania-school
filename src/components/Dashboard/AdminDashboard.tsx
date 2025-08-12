@@ -19,7 +19,7 @@ const AdminDashboard: React.FC = () => {
         const token = localStorage.getItem('token') || undefined;
         const [coursesData, usersData, comp] = await Promise.all([
           coursesApi.getAllCourses(),
-          usersApi.getAllUsers(),
+          usersApi.getAllUsers(token),
           analyticsApi.getCompletionRate(token)
         ]);
         setCourses(coursesData);

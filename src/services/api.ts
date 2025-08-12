@@ -189,14 +189,25 @@ export const coursesApi = {
 
 export const usersApi = {
   getAllUsers: async (token?: string): Promise<User[]> => {
-    const res = await fetch(`${API_BASE_URL}/api/users`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/users`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+      if (!res.ok) {
+        // Graceful fallback on 404 or server not providing endpoint
+        if (res.status === 404) {
+          return [];
+        }
+        throw new Error('Failed to fetch users');
       }
-    });
-    if (!res.ok) throw new Error('Failed to fetch users');
-    return await res.json();
+      return await res.json();
+    } catch (e) {
+      // Network or other errors
+      return [];
+    }
   }
 };
 
@@ -279,13 +290,20 @@ export const enrollmentsApi = {
 
 export const analyticsApi = {
   getCompletionRate: async (token?: string): Promise<number> => {
-    const res = await fetch(`${API_BASE_URL}/api/analytics/completion-rate`, {
-      headers: {
-        ...(token ? { Authorization: `Bearer ${token}` } : {})
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/analytics/completion-rate`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+      if (!res.ok) {
+        if (res.status === 404) return 0;
+        throw new Error('Failed to fetch completion rate');
       }
-    });
-    if (!res.ok) throw new Error('Failed to fetch completion rate');
-    const data = await res.json();
-    return typeof data === 'number' ? data : data?.completionRate ?? 0;
+      const data = await res.json();
+      return typeof data === 'number' ? data : data?.completionRate ?? 0;
+    } catch (e) {
+      return 0;
+    }
   }
 };

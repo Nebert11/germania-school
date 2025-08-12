@@ -1,5 +1,7 @@
 import express from 'express';
 import Course from '../models/Course';
+import Enrollment from '../models/Enrollment';
+import User from '../models/User';
 
 const router = express.Router();
 
@@ -18,8 +20,16 @@ router.post('/', async (req, res) => {
 // Get all courses
 router.get('/', async (_req, res) => {
   try {
-    const courses = await Course.find().populate('teacher', 'name email');
-    res.json(courses);
+    const courses = await Course.find().populate('teacher', 'firstName lastName email role');
+    // Attach enrolledStudents as array of user ids for accuracy
+    const withEnrollmentUsers = await Promise.all(
+      courses.map(async (c) => {
+        const enrollments = await Enrollment.find({ course: c._id }).select('user');
+        const enrolledStudents = enrollments.map((e) => String(e.user));
+        return { ...c.toObject(), enrolledStudents };
+      })
+    );
+    res.json(withEnrollmentUsers);
   } catch (err) {
     res.status(500).json({ error: (err as Error).message });
   }
@@ -28,7 +38,7 @@ router.get('/', async (_req, res) => {
 // Get a course by ID
 router.get('/:id', async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id).populate('teacher', 'name email');
+    const course = await Course.findById(req.params.id).populate('teacher', 'firstName lastName email role');
     if (!course) return res.status(404).json({ error: 'Course not found' });
     res.json(course);
   } catch (err) {
@@ -47,6 +57,26 @@ router.put('/:id', async (req, res) => {
     );
     if (!course) return res.status(404).json({ error: 'Course not found' });
     res.json(course);
+  } catch (err) {
+    res.status(400).json({ error: (err as Error).message });
+  }
+});
+
+// Assign a teacher to a course
+router.put('/:id/assign-teacher', async (req, res) => {
+  try {
+    const { teacher } = req.body;
+    const teacherUser = await User.findById(teacher);
+    if (!teacherUser || teacherUser.role !== 'teacher') {
+      return res.status(400).json({ error: 'Invalid teacher id' });
+    }
+    const updated = await Course.findByIdAndUpdate(
+      req.params.id,
+      { teacher },
+      { new: true }
+    ).populate('teacher', 'firstName lastName email role');
+    if (!updated) return res.status(404).json({ error: 'Course not found' });
+    res.json(updated);
   } catch (err) {
     res.status(400).json({ error: (err as Error).message });
   }
