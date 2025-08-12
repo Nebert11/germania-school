@@ -177,12 +177,17 @@ const AdminDashboard: React.FC = () => {
           <div className="p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Users</h2>
             <div className="space-y-4">
-              {users.slice(-5).reverse().map((u) => (
+              {users.slice(-5).reverse().map((u) => {
+                const fullName = `${u.firstName} ${u.lastName}`.trim();
+                const avatarUrl = u.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=E5E7EB&color=111827&size=64`;
+                const fallbackAvatar = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="100%" height="100%" fill="%23e5e7eb"/><circle cx="32" cy="24" r="12" fill="%239ca3af"/><rect x="16" y="40" width="32" height="16" rx="8" fill="%239ca3af"/></svg>';
+                return (
                 <div key={u._id || u.id} className="flex items-center space-x-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
                   <img
-                    src={u.avatar || 'https://via.placeholder.com/64'}
+                    src={avatarUrl}
                     alt="User"
                     className="w-10 h-10 rounded-full object-cover"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).onerror = null; (e.currentTarget as HTMLImageElement).src = fallbackAvatar; }}
                   />
                   <div className="flex-1">
                     <p className="font-semibold text-gray-900 dark:text-gray-100">{u.firstName} {u.lastName}</p>
@@ -190,7 +195,7 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   <span className={`px-2 py-1 rounded-full text-xs ${u.role === 'teacher' ? 'bg-blue-100 text-blue-800' : u.role === 'student' ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-800'}`}>{u.role}</span>
                 </div>
-              ))}
+              );})}
             </div>
           </div>
         </div>

@@ -43,10 +43,14 @@ const UsersPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {users.map((u) => (
+        {users.map((u) => {
+          const fullName = `${u.firstName} ${u.lastName}`.trim();
+          const avatarUrl = u.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=E5E7EB&color=111827&size=64`;
+          const fallbackAvatar = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="100%" height="100%" fill="%23e5e7eb"/><circle cx="32" cy="24" r="12" fill="%239ca3af"/><rect x="16" y="40" width="32" height="16" rx="8" fill="%239ca3af"/></svg>';
+          return (
           <div key={u._id || u.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
             <div className="flex items-center mb-3">
-              <img src={u.avatar || 'https://via.placeholder.com/64'} alt="avatar" className="h-10 w-10 rounded-full object-cover mr-3" />
+              <img src={avatarUrl} alt="avatar" className="h-10 w-10 rounded-full object-cover mr-3" onError={(e) => { (e.currentTarget as HTMLImageElement).onerror = null; (e.currentTarget as HTMLImageElement).src = fallbackAvatar; }} />
               <div className="truncate">
                 <div className="font-semibold">{u.firstName} {u.lastName}</div>
                 <div className="text-xs text-gray-500 truncate">{u.email}</div>
@@ -59,7 +63,7 @@ const UsersPage: React.FC = () => {
               </span>
             </div>
           </div>
-        ))}
+        );})}
       </div>
     </div>
   );

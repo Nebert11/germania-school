@@ -13,6 +13,7 @@ const TeacherStudents: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState<Course[]>([]);
   const [students, setStudents] = useState<User[]>([]);
+  const fallbackAvatar = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="100%" height="100%" fill="%23e5e7eb"/><circle cx="32" cy="24" r="12" fill="%239ca3af"/><rect x="16" y="40" width="32" height="16" rx="8" fill="%239ca3af"/></svg>';
 
   useEffect(() => {
     const load = async () => {
@@ -88,13 +89,16 @@ const TeacherStudents: React.FC = () => {
           {studentsWithEnrollments.map((student) => {
             const studentKey = (student as any)._id || student.id;
             const enrolledCourses = studentIdToCourses.get(studentKey) || [];
+            const fullName = `${student.firstName} ${student.lastName}`.trim();
+            const avatarUrl = student.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=E5E7EB&color=111827&size=64`;
             return (
               <div key={studentKey} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
                 <div className="flex items-center mb-3">
                   <img
-                    src={student.avatar || 'https://via.placeholder.com/64'}
+                    src={avatarUrl}
                     alt={`${student.firstName} ${student.lastName}`}
                     className="h-10 w-10 rounded-full object-cover mr-3"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).onerror = null; (e.currentTarget as HTMLImageElement).src = fallbackAvatar; }}
                   />
                   <div>
                     <h3 className="font-semibold text-gray-900 dark:text-gray-100">
