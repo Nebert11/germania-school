@@ -13,7 +13,12 @@ import {
   Award
 } from 'lucide-react';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { user } = useAuth();
 
   const studentNavItems = [
@@ -57,22 +62,33 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-900 shadow-sm border-r border-gray-200 dark:border-gray-700 min-h-screen transition-colors">
-      <div className="p-4">
-        <div className="space-y-2">
-          {getNavItems().map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
-            >
-              <item.icon className="h-5 w-5 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
-              <span className="text-sm font-medium">{item.label}</span>
-            </a>
-          ))}
+    <>
+      {/* Mobile overlay */}
+      <div
+        className={`${isOpen ? 'fixed' : 'hidden'} inset-0 bg-black/40 z-40 md:hidden`}
+        onClick={onClose}
+      />
+
+      <aside
+        className={`transform transition-transform duration-200 ease-in-out w-64 bg-white dark:bg-gray-900 shadow-sm border-r border-gray-200 dark:border-gray-700 min-h-screen z-50 fixed inset-y-0 left-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:static md:translate-x-0`}
+      >
+        <div className="p-4">
+          <div className="space-y-2">
+            {getNavItems().map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={onClose}
+                className="flex items-center space-x-3 px-3 py-2 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+              >
+                <item.icon className="h-5 w-5 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
+                <span className="text-sm font-medium">{item.label}</span>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };
 

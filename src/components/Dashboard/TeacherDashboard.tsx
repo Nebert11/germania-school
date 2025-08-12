@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { coursesApi } from '../../services/api';
 import { Course } from '../../types';
-import { BookOpen, Users, Calendar, BarChart3, Plus, Video, MessageSquare } from 'lucide-react';
+import { BookOpen, Users, Calendar, BarChart3, Video, MessageSquare } from 'lucide-react';
 
 const TeacherDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -13,7 +13,7 @@ const TeacherDashboard: React.FC = () => {
     const fetchCourses = async () => {
       try {
         const coursesData = await coursesApi.getAllCourses();
-        const teacherCourses = coursesData.filter(course => course.teacherId === user?.id);
+        const teacherCourses = coursesData.filter((course: Course) => course.teacherId === user?.id);
         setCourses(teacherCourses);
       } catch (error) {
         console.error('Error fetching courses:', error);

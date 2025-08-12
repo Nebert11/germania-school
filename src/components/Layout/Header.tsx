@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Bell, MessageCircle, User, LogOut, BookOpen, Settings, Sun, Moon } from 'lucide-react';
+import { Bell, MessageCircle, User, LogOut, BookOpen, Settings, Sun, Moon, Menu } from 'lucide-react';
 
 const ThemeToggle: React.FC = () => {
   const { theme, setTheme } = useTheme();
@@ -17,15 +17,27 @@ const ThemeToggle: React.FC = () => {
   );
 };
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onToggleSidebar: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   const { user, logout } = useAuth();
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+          {/* Left side: Mobile menu + Logo */}
           <div className="flex items-center">
+            <button
+              className="md:hidden mr-2 p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+              onClick={onToggleSidebar}
+              aria-label="Toggle sidebar"
+              type="button"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
             <BookOpen className="h-8 w-8 text-blue-600 mr-2" />
             <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Germania School</h1>
           </div>
