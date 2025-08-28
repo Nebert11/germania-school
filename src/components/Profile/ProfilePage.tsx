@@ -25,15 +25,20 @@ const ProfilePage: React.FC = () => {
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      try {
-        const token = localStorage.getItem('token') || undefined;
-        const updated = await profileApi.uploadAvatar(user.id || user._id || '', file, token);
-        setAvatar(updated.avatar || '');
-        setAvatarError(false);
-        updateUser({ avatar: updated.avatar });
-      } catch (err) {
-        setAvatarError(true);
-      }
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const token = localStorage.getItem('token') || undefined;
+          const dataUrl = reader.result as string;
+          const updated = await profileApi.uploadAvatar(user.id || user._id || '', dataUrl, token);
+          setAvatar(updated.avatar || '');
+          setAvatarError(false);
+          updateUser({ avatar: updated.avatar });
+        } catch (err) {
+          setAvatarError(true);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 

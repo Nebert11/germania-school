@@ -212,16 +212,15 @@ export const usersApi = {
 };
 
 export const profileApi = {
-  uploadAvatar: async (userId: string, file: File, token?: string): Promise<User> => {
-    const formData = new FormData();
-    formData.append('avatar', file);
+  uploadAvatar: async (userId: string, dataUrl: string, token?: string): Promise<User> => {
     const res = await fetch(`${API_BASE_URL}/api/users/${userId}/avatar`, {
       method: 'PUT',
       headers: {
+        'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {})
-      } as any,
-      body: formData
-    } as RequestInit);
+      },
+      body: JSON.stringify({ avatar: dataUrl })
+    });
     if (!res.ok) throw new Error('Failed to upload avatar');
     const data = await res.json();
     return data.user as User;
