@@ -92,12 +92,12 @@ const StudentDashboard: React.FC = () => {
       </div>
 
       {/* Continue Learning Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Continue Learning</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Continue Learning</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {courses.map((course: Course) => (
-              <div key={course._id || course.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={course._id || course.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="flex items-start space-x-4">
                   <img
                     src={course.thumbnail}
@@ -105,14 +105,14 @@ const StudentDashboard: React.FC = () => {
                     className="w-16 h-16 rounded-lg object-cover"
                   />
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">{course.title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{course.description}</p>
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">{course.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{course.description}</p>
                     <div className="mt-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-500">Progress</span>
-                        <span className="text-gray-700">65%</span>
+                        <span className="text-gray-500 dark:text-gray-400">Progress</span>
+                        <span className="text-gray-700 dark:text-gray-200">65%</span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-1">
                         <div className="bg-blue-600 h-2 rounded-full" style={{ width: '65%' }}></div>
                       </div>
                     </div>
@@ -129,28 +129,28 @@ const StudentDashboard: React.FC = () => {
       </div>
 
       {/* Upcoming Classes */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Upcoming Classes</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Upcoming Classes</h2>
           <div className="space-y-4">
-            <div className="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center space-x-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
               <Calendar className="h-8 w-8 text-blue-600" />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Conversation Practice</h3>
-                <p className="text-sm text-gray-600">Advanced German Conversation</p>
-                <p className="text-sm text-blue-600 mt-1">Today at 2:00 PM</p>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">Conversation Practice</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Advanced German Conversation</p>
+                <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">Today at 2:00 PM</p>
               </div>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 Join Class
               </button>
             </div>
             
-            <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
+            <div className="flex items-center space-x-4 p-4 bg-green-50 dark:bg-green-900/30 rounded-lg">
               <Calendar className="h-8 w-8 text-green-600" />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Grammar Review</h3>
-                <p className="text-sm text-gray-600">German for Beginners</p>
-                <p className="text-sm text-green-600 mt-1">Tomorrow at 10:00 AM</p>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">Grammar Review</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">German for Beginners</p>
+                <p className="text-sm text-green-600 dark:text-green-400 mt-1">Tomorrow at 10:00 AM</p>
               </div>
               <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                 Set Reminder

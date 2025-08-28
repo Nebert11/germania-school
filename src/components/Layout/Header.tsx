@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           {/* Left side: Mobile menu + Logo */}
           <div className="flex items-center">
             <button
-              className="md:hidden mr-2 p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+              className="md:hidden mr-2 p-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
               onClick={onToggleSidebar}
               aria-label="Toggle sidebar"
               type="button"
@@ -49,26 +49,26 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
 
           {/* Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#dashboard" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <a href="#dashboard" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
               Dashboard
             </a>
-            <a href="#courses" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <a href="#courses" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
               Courses
             </a>
-            <a href="#vocabulary" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <a href="#vocabulary" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
               Vocabulary
             </a>
-            <a href="#forum" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <a href="#forum" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
               Forum
             </a>
-            <a href="#analytics" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <a href="#analytics" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
               Analytics
             </a>
-            <a href="#settings" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+            <a href="#settings" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
               Settings
             </a>
             {user?.role === 'admin' && (
-              <a href="#users" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+              <a href="#users" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 Users
               </a>
             )}
@@ -77,15 +77,15 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           {/* User menu */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <button className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+            <button className="p-2 text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
               <Bell className="h-5 w-5" />
             </button>
-            <button className="p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+            <button className="p-2 text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
               <MessageCircle className="h-5 w-5" />
             </button>
             {user && (
               <div className="relative group">
-                <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                   {user.avatar && !avatarError ? (
                     <img
                       src={user.avatar}
@@ -101,21 +101,21 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
                       {initials || <User className="h-4 w-4" />}
                     </div>
                   )}
-                  <span className="text-sm font-medium text-gray-700">{user.firstName}</span>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{user.firstName}</span>
                 </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                   <div className="py-1">
-                    <a href="#profile" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <a href="#profile" className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                       <User className="h-4 w-4 mr-2" />
                       Profile
                     </a>
-                    <a href="#settings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <a href="#settings" className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                       <Settings className="h-4 w-4 mr-2" />
                       Settings
                     </a>
                     <button
                       onClick={logout}
-                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-left"
+                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 text-left"
                     >
                       <LogOut className="h-4 w-4 mr-2" />
                       Sign out

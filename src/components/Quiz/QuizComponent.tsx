@@ -91,7 +91,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ title, questions, onCompl
     ).length / questions.length) * 100;
 
     return (
-      <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-gray-900 dark:text-gray-100 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="text-center mb-6">
           <div className="mb-4">
             {score >= 80 ? (
@@ -100,28 +100,28 @@ const QuizComponent: React.FC<QuizComponentProps> = ({ title, questions, onCompl
               <XCircle className="h-16 w-16 text-red-600 mx-auto" />
             )}
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Quiz Complete!</h2>
           <p className={`text-3xl font-bold ${getScoreColor(score)}`}>
             {Math.round(score)}%
           </p>
-          <p className="text-gray-600 mt-2">{getScoreMessage(score)}</p>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">{getScoreMessage(score)}</p>
         </div>
 
         <div className="space-y-4 mb-6">
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Questions Answered:</span>
+            <span className="text-gray-600 dark:text-gray-300">Questions Answered:</span>
             <span className="font-medium">{Object.keys(selectedAnswers).length}/{questions.length}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Correct Answers:</span>
-            <span className="font-medium text-green-600">
+            <span className="text-gray-600 dark:text-gray-300">Correct Answers:</span>
+            <span className="font-medium text-green-600 dark:text-green-400">
               {Object.values(selectedAnswers).filter((answer, index) => 
                 answer === questions[index]?.correctAnswer
               ).length}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Time Taken:</span>
+            <span className="text-gray-600 dark:text-gray-300">Time Taken:</span>
             <span className="font-medium">{formatTime(600 - timeLeft)}</span>
           </div>
         </div>

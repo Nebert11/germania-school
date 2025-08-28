@@ -37,26 +37,26 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="p-8 max-w-2xl mx-auto space-y-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
-      <h2 className="text-2xl font-bold mb-6">Settings</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Settings</h2>
       <form onSubmit={handleSave} className="space-y-8">
         {/* Account Settings */}
         <section>
-          <h3 className="text-lg font-semibold mb-2">Account</h3>
+          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Account</h3>
           <div className="space-y-2">
             <div>
-              <label className="block text-sm font-medium">Email</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
               <input type="email" value={user.email} disabled className="w-full border rounded px-3 py-2 bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" />
             </div>
             <div>
-              <label className="block text-sm font-medium">Change Password</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Change Password</label>
               <button className="mt-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800" type="button">Change Password</button>
             </div>
             <div>
-              <label className="block text-sm font-medium">Name</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
               <input type="text" value={user.firstName + ' ' + user.lastName} disabled className="w-full border rounded px-3 py-2 bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" />
             </div>
             <div>
-              <label className="block text-sm font-medium">Avatar</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Avatar</label>
               <img src={user.avatar} alt="avatar" className="h-16 w-16 rounded-full object-cover" />
             </div>
           </div>
@@ -64,10 +64,10 @@ const SettingsPage: React.FC = () => {
 
         {/* Language & Appearance */}
         <section>
-          <h3 className="text-lg font-semibold mb-2">Language & Appearance</h3>
+          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Language & Appearance</h3>
           <div className="space-y-2">
             <div>
-              <label className="block text-sm font-medium">Preferred Language</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Preferred Language</label>
               <select className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" value={language} onChange={e => setLanguage(e.target.value)}>
                 <option>English</option>
                 <option>German</option>
@@ -75,7 +75,7 @@ const SettingsPage: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex-1">
-                <label className="block text-sm font-medium">Theme</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Theme</label>
                 <select className="w-full border rounded px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300" value={theme} onChange={e => setTheme(e.target.value)}>
                   <option value="light">Light</option>
                   <option value="dark">Dark</option>
@@ -88,7 +88,7 @@ const SettingsPage: React.FC = () => {
 
         {/* Notifications */}
         <section>
-          <h3 className="text-lg font-semibold mb-2">Notifications</h3>
+          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Notifications</h3>
           <div className="space-y-2">
             <label className="flex items-center">
               <input type="checkbox" className="mr-2" checked={notifications.newCourses} onChange={e => setNotifications(n => ({ ...n, newCourses: e.target.checked }))} />
@@ -107,36 +107,36 @@ const SettingsPage: React.FC = () => {
 
         {/* Privacy & Security */}
         <section>
-          <h3 className="text-lg font-semibold mb-2">Privacy & Security</h3>
+          <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Privacy & Security</h3>
           <div className="space-y-2">
-            <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300" type="button">Enable Two-Factor Authentication</button>
-            <button className="px-4 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200" type="button">Delete Account</button>
+            <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600" type="button">Enable Two-Factor Authentication</button>
+            <button className="px-4 py-2 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 rounded hover:bg-red-200 dark:hover:bg-red-800/40" type="button">Delete Account</button>
           </div>
         </section>
 
         {/* Role-specific settings */}
         {user.role === 'admin' && (
           <section>
-            <h3 className="text-lg font-semibold mb-2">Admin Settings</h3>
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Admin Settings</h3>
             <div className="space-y-2">
-              <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200" type="button">Manage Users</button>
-              <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200" type="button">Manage Courses</button>
-              <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300" type="button">Platform Settings</button>
+              <button className="px-4 py-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800/40" type="button">Manage Users</button>
+              <button className="px-4 py-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800/40" type="button">Manage Courses</button>
+              <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600" type="button">Platform Settings</button>
             </div>
           </section>
         )}
         {user.role === 'teacher' && (
           <section>
-            <h3 className="text-lg font-semibold mb-2">Teacher Settings</h3>
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Teacher Settings</h3>
             <div className="space-y-2">
-              <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200" type="button">My Courses</button>
-              <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200" type="button">Student Management</button>
+              <button className="px-4 py-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800/40" type="button">My Courses</button>
+              <button className="px-4 py-2 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800/40" type="button">Student Management</button>
             </div>
           </section>
         )}
         {user.role === 'student' && (
           <section>
-            <h3 className="text-lg font-semibold mb-2">Student Settings</h3>
+            <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Student Settings</h3>
             <div className="space-y-2">
               <label className="flex items-center">
                 <input type="checkbox" className="mr-2" />
@@ -151,7 +151,7 @@ const SettingsPage: React.FC = () => {
         )}
         <div className="pt-4">
           <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save Settings</button>
-          {success && <span className="ml-4 text-green-600 font-medium">Settings saved!</span>}
+          {success && <span className="ml-4 text-green-600 dark:text-green-400 font-medium">Settings saved!</span>}
         </div>
       </form>
     </div>

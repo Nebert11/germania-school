@@ -73,8 +73,8 @@ const AdminDashboard: React.FC = () => {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage your platform and monitor performance</p>
-          <p className="text-sm text-gray-500 mt-1">Users: {totalUsers} • Courses: {courses.length} • Students: {totalStudents}</p>
+          <p className="text-gray-600 dark:text-gray-300 mt-2">Manage your platform and monitor performance</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Users: {totalUsers} • Courses: {courses.length} • Students: {totalStudents}</p>
         </div>
         <div className="flex space-x-3">
           <button className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -95,7 +95,7 @@ const AdminDashboard: React.FC = () => {
           <select
             value={selectedCourseId}
             onChange={(e) => setSelectedCourseId(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 dark:text-gray-100"
           >
             <option value="">Select course</option>
             {courses.map((c: any) => (
@@ -105,7 +105,7 @@ const AdminDashboard: React.FC = () => {
           <select
             value={selectedTeacherId}
             onChange={(e) => setSelectedTeacherId(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 dark:text-gray-100"
           >
             <option value="">Select teacher</option>
             {teachers.map((t: any) => (
@@ -141,9 +141,9 @@ const AdminDashboard: React.FC = () => {
           <div className="flex items-center">
             <BookOpen className="h-8 w-8 text-green-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Active Courses</p>
-              <p className="text-2xl font-bold text-gray-900">{courses.length}</p>
-              <p className="text-sm text-blue-600 mt-1">↗ 2 new this month</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Active Courses</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{courses.length}</p>
+              <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">↗ 2 new this month</p>
             </div>
           </div>
         </div>
@@ -152,9 +152,9 @@ const AdminDashboard: React.FC = () => {
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Revenue</p>
-              <p className="text-2xl font-bold text-gray-900">${totalRevenue.toLocaleString()}</p>
-              <p className="text-sm text-green-600 mt-1">↗ 18% from last month</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Revenue</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">${totalRevenue.toLocaleString()}</p>
+              <p className="text-sm text-green-600 dark:text-green-400 mt-1">↗ 18% from last month</p>
             </div>
           </div>
         </div>
@@ -163,9 +163,9 @@ const AdminDashboard: React.FC = () => {
           <div className="flex items-center">
             <TrendingUp className="h-8 w-8 text-purple-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Completion Rate</p>
-              <p className="text-2xl font-bold text-gray-900">{Math.round(completionRate)}%</p>
-              <p className="text-sm text-green-600 mt-1">↗ 5% from last month</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Completion Rate</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{Math.round(completionRate)}%</p>
+              <p className="text-sm text-green-600 dark:text-green-400 mt-1">↗ 5% from last month</p>
             </div>
           </div>
         </div>
@@ -173,9 +173,9 @@ const AdminDashboard: React.FC = () => {
 
       {/* Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Users</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Recent Users</h2>
             <div className="space-y-4">
               {users.slice(-5).reverse().map((u) => {
                 const fullName = `${u.firstName} ${u.lastName}`.trim();
@@ -200,24 +200,24 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Course Performance</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Course Performance</h2>
             <div className="space-y-4">
               {courses.slice(0, 3).map((course) => (
-                <div key={course.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                <div key={(course as any)._id || course.id} className="flex items-center space-x-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
                   <img
                     src={course.thumbnail}
                     alt={course.title}
                     className="w-10 h-10 rounded-lg object-cover"
                   />
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900">{course.title}</p>
-                    <p className="text-sm text-gray-600">{course.enrolledStudents?.length || 0} students</p>
+                    <p className="font-semibold text-gray-900 dark:text-gray-100">{course.title}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{course.enrolledStudents?.length || 0} students</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-medium text-green-600">92%</p>
-                    <p className="text-xs text-gray-500">completion</p>
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400">92%</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">completion</p>
                   </div>
                 </div>
               ))}
@@ -227,17 +227,17 @@ const AdminDashboard: React.FC = () => {
       </div>
 
       {/* Analytics Chart */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Analytics Overview</h2>
-            <button className="inline-flex items-center px-3 py-1 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Analytics Overview</h2>
+            <button className="inline-flex items-center px-3 py-1 border border-gray-300 dark:border-gray-700 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               <BarChart3 className="h-4 w-4 mr-2" />
               View Details
             </button>
           </div>
-          <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-            <p className="text-gray-500">Chart placeholder - Analytics data would be displayed here</p>
+          <div className="h-64 bg-gray-50 dark:bg-gray-900 rounded-lg flex items-center justify-center">
+            <p className="text-gray-500 dark:text-gray-400">Chart placeholder - Analytics data would be displayed here</p>
           </div>
         </div>
       </div>

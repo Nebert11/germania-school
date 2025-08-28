@@ -152,24 +152,24 @@ const LiveClassRoom: React.FC<LiveClassRoomProps> = ({ classId, className }) => 
 
         {/* Chat Sidebar */}
         {showChat && (
-          <div className="w-80 bg-white border-l border-gray-200 flex flex-col">
-            <div className="p-4 border-b border-gray-200">
-              <h3 className="font-semibold text-gray-900">Chat</h3>
+          <div className="w-80 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Chat</h3>
             </div>
             
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((message) => (
                 <div key={message.id} className="space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium text-gray-900">{message.sender}</span>
-                    <span className="text-xs text-gray-500">{message.timestamp}</span>
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{message.sender}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{message.timestamp}</span>
                   </div>
-                  <p className="text-sm text-gray-700">{message.message}</p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">{message.message}</p>
                 </div>
               ))}
             </div>
             
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex space-x-2">
                 <input
                   type="text"
@@ -177,7 +177,7 @@ const LiveClassRoom: React.FC<LiveClassRoomProps> = ({ classId, className }) => 
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder="Type a message..."
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 dark:text-gray-100"
                 />
                 <button
                   onClick={handleSendMessage}

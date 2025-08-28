@@ -82,14 +82,14 @@ const VocabularyTrainer: React.FC = () => {
     <div className="p-8 bg-white dark:bg-gray-900 dark:text-gray-100 rounded shadow border border-gray-200 dark:border-gray-700 transition-colors">
       <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Vocabulary Trainer</h2>
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Vocabulary Trainer</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Vocabulary Trainer</h1>
         <div className="flex space-x-4">
           <button
             onClick={() => setPracticeMode('review')}
             className={`px-4 py-2 rounded-lg transition-colors ${
               practiceMode === 'review' 
                 ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Review
@@ -99,7 +99,7 @@ const VocabularyTrainer: React.FC = () => {
             className={`px-4 py-2 rounded-lg transition-colors ${
               practiceMode === 'new' 
                 ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             New Words
@@ -152,16 +152,16 @@ const VocabularyTrainer: React.FC = () => {
 
       {/* Practice Card */}
       {currentWord && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-8">
           <div className="text-center">
             <div className="mb-6">
-              <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
+              <span className="inline-block bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-medium mb-4">
                 {currentWord.category}
               </span>
-              <h2 className="text-4xl font-bold text-gray-900 mb-2">{currentWord.word}</h2>
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">{currentWord.word}</h2>
               <button
                 onClick={playPronunciation}
-                className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition-colors"
               >
                 <Volume2 className="h-4 w-4 mr-2" />
                 {currentWord.pronunciation}
@@ -170,9 +170,9 @@ const VocabularyTrainer: React.FC = () => {
 
             {showAnswer ? (
               <div className="space-y-4">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <p className="text-xl font-semibold text-gray-900 mb-2">{currentWord.translation}</p>
-                  <p className="text-gray-600 italic">"{currentWord.example}"</p>
+                <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                  <p className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">{currentWord.translation}</p>
+                  <p className="text-gray-600 dark:text-gray-300 italic">"{currentWord.example}"</p>
                 </div>
                 
                 <div className="flex justify-center space-x-4">
@@ -194,7 +194,7 @@ const VocabularyTrainer: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-gray-600">What does this word mean?</p>
+                <p className="text-gray-600 dark:text-gray-300">What does this word mean?</p>
                 <button
                   onClick={() => setShowAnswer(true)}
                   className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -208,10 +208,10 @@ const VocabularyTrainer: React.FC = () => {
       )}
 
       {/* Word List */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Your Vocabulary</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Your Vocabulary</h2>
             <button className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
               <Plus className="h-4 w-4 mr-2" />
               Add Word
@@ -220,22 +220,22 @@ const VocabularyTrainer: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {words.map((word) => (
-              <div key={word.id} className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+              <div key={word.id} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-gray-900">{word.word}</h3>
+                  <h3 className="font-semibold text-gray-900 dark:text-gray-100">{word.word}</h3>
                   <div className="flex">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div
                         key={i}
                         className={`w-2 h-2 rounded-full mr-1 ${
-                          i < word.masteryLevel ? 'bg-green-500' : 'bg-gray-300'
+                          i < word.masteryLevel ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-700'
                         }`}
                       />
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm mb-2">{word.translation}</p>
-                <p className="text-gray-500 text-xs italic">"{word.example}"</p>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{word.translation}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-xs italic">"{word.example}"</p>
               </div>
             ))}
           </div>

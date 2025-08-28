@@ -58,52 +58,52 @@ const TeacherDashboard: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <Users className="h-8 w-8 text-green-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Students</p>
-              <p className="text-2xl font-bold text-gray-900">{totalStudents}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Total Students</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalStudents}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <Calendar className="h-8 w-8 text-purple-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Classes Today</p>
-              <p className="text-2xl font-bold text-gray-900">3</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Classes Today</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">3</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <BarChart3 className="h-8 w-8 text-orange-600" />
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Avg. Rating</p>
-              <p className="text-2xl font-bold text-gray-900">4.8</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-300">Avg. Rating</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">4.8</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* My Courses */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">My Courses</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">My Courses</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
-              <div key={course.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={course.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <img
                   src={course.thumbnail}
                   alt={course.title}
                   className="w-full h-32 object-cover rounded-lg mb-4"
                 />
-                <h3 className="font-semibold text-gray-900 mb-2">{course.title}</h3>
-                <p className="text-sm text-gray-600 mb-3">{course.description}</p>
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">{course.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{course.description}</p>
+                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-3">
                   <span className="flex items-center">
                     <Users className="h-4 w-4 mr-1" />
                     {course.enrolledStudents?.length || 0} students
@@ -116,7 +116,7 @@ const TeacherDashboard: React.FC = () => {
                   <button className="flex-1 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm">
                     Manage
                   </button>
-                  <button className="px-3 py-1 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors text-sm">
+                  <button className="px-3 py-1 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
                     Stats
                   </button>
                 </div>
@@ -127,28 +127,28 @@ const TeacherDashboard: React.FC = () => {
       </div>
 
       {/* Today's Schedule */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Today's Schedule</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">Today's Schedule</h2>
           <div className="space-y-4">
-            <div className="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center space-x-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
               <Video className="h-8 w-8 text-blue-600" />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Beginner German - Lesson 5</h3>
-                <p className="text-sm text-gray-600">Basic sentence structure</p>
-                <p className="text-sm text-blue-600 mt-1">10:00 AM - 11:00 AM</p>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">Beginner German - Lesson 5</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Basic sentence structure</p>
+                <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">10:00 AM - 11:00 AM</p>
               </div>
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 Start Class
               </button>
             </div>
             
-            <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
+            <div className="flex items-center space-x-4 p-4 bg-green-50 dark:bg-green-900/30 rounded-lg">
               <MessageSquare className="h-8 w-8 text-green-600" />
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Conversation Practice</h3>
-                <p className="text-sm text-gray-600">Advanced German Conversation</p>
-                <p className="text-sm text-green-600 mt-1">2:00 PM - 3:00 PM</p>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">Conversation Practice</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Advanced German Conversation</p>
+                <p className="text-sm text-green-600 dark:text-green-400 mt-1">2:00 PM - 3:00 PM</p>
               </div>
               <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
                 Prepare
