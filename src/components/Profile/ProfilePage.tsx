@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { profileApi } from '../../services/api';
 
 const ProfilePage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   if (!user) return null;
 
   // Local state for editable fields
@@ -12,7 +13,7 @@ const ProfilePage: React.FC = () => {
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [success, setSuccess] = useState(false);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarError, setAvatarError] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +22,18 @@ const ProfilePage: React.FC = () => {
     setTimeout(() => setSuccess(false), 2000);
   };
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setAvatarFile(e.target.files[0]);
-      setAvatar(URL.createObjectURL(e.target.files[0]));
+      const file = e.target.files[0];
+      try {
+        const token = localStorage.getItem('token') || undefined;
+        const updated = await profileApi.uploadAvatar(user.id || user._id || '', file, token);
+        setAvatar(updated.avatar || '');
+        setAvatarError(false);
+        updateUser({ avatar: updated.avatar });
+      } catch (err) {
+        setAvatarError(true);
+      }
     }
   };
 
@@ -38,18 +47,27 @@ const ProfilePage: React.FC = () => {
               <div>
                 {(() => {
                   const fullName = `${firstName || user.firstName} ${lastName || user.lastName}`.trim();
-                  const computedAvatar = avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=E5E7EB&color=111827&size=128`;
-                  const fallbackAvatar = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23e5e7eb"/><circle cx="64" cy="48" r="24" fill="%239ca3af"/><rect x="32" y="80" width="64" height="32" rx="16" fill="%239ca3af"/></svg>';
-                  return (
+                  const initials = fullName
+                    .split(' ')
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map(n => n[0]?.toUpperCase())
+                    .join('');
+                  const showImage = !!avatar && !avatarError;
+                  return showImage ? (
                     <img
-                      src={computedAvatar}
+                      src={avatar}
                       alt="avatar"
                       className="h-24 w-24 rounded-full object-cover border"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).onerror = null;
-                        (e.currentTarget as HTMLImageElement).src = fallbackAvatar;
-                      }}
+                      onError={() => setAvatarError(true)}
                     />
+                  ) : (
+                    <div
+                      aria-label={fullName || 'avatar initials'}
+                      className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 flex items-center justify-center text-3xl font-semibold border"
+                    >
+                      {initials || 'U'}
+                    </div>
                   );
                 })()}
                 <input type="file" accept="image/*" onChange={handleAvatarChange} className="mt-2" />

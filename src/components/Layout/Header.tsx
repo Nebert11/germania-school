@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { Bell, MessageCircle, User, LogOut, BookOpen, Settings, Sun, Moon, Menu } from 'lucide-react';
@@ -23,6 +23,11 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   const { user, logout } = useAuth();
+  const [avatarError, setAvatarError] = useState(false);
+  const initials = user ? `${(user.firstName?.[0] || '').toUpperCase()}${(user.lastName?.[0] || '').toUpperCase()}` : '';
+  useEffect(() => {
+    setAvatarError(false);
+  }, [user?.avatar]);
 
   return (
     <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors">
@@ -81,11 +86,21 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
             {user && (
               <div className="relative group">
                 <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                  <img
-                    src={user.avatar}
-                    alt={`${user.firstName} ${user.lastName}`}
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
+                  {user.avatar && !avatarError ? (
+                    <img
+                      src={user.avatar}
+                      alt={`${user.firstName} ${user.lastName}`}
+                      className="h-8 w-8 rounded-full object-cover"
+                      onError={() => setAvatarError(true)}
+                    />
+                  ) : (
+                    <div
+                      aria-label={`${user.firstName} ${user.lastName}`}
+                      className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 flex items-center justify-center text-xs font-semibold"
+                    >
+                      {initials || <User className="h-4 w-4" />}
+                    </div>
+                  )}
                   <span className="text-sm font-medium text-gray-700">{user.firstName}</span>
                 </button>
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">

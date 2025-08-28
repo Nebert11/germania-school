@@ -10,12 +10,17 @@ import analyticsRoutes from './routes/analytics';
 import Course from './models/Course';
 import User from './models/User';
 import path from 'path';
+import fs from 'fs';
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+// Serve static uploads
+const uploadsDir = path.join(__dirname, '../uploads');
+fs.mkdirSync(uploadsDir, { recursive: true });
+app.use('/uploads', express.static(uploadsDir));
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);

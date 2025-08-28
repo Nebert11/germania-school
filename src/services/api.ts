@@ -211,6 +211,23 @@ export const usersApi = {
   }
 };
 
+export const profileApi = {
+  uploadAvatar: async (userId: string, file: File, token?: string): Promise<User> => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    const res = await fetch(`${API_BASE_URL}/api/users/${userId}/avatar`, {
+      method: 'PUT',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      } as any,
+      body: formData
+    } as RequestInit);
+    if (!res.ok) throw new Error('Failed to upload avatar');
+    const data = await res.json();
+    return data.user as User;
+  }
+};
+
 export const lessonsApi = {
   getLessons: async (courseId: string): Promise<Lesson[]> => {
     await new Promise(resolve => setTimeout(resolve, 300));
